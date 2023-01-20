@@ -1,0 +1,182 @@
+<nav class="navbar bg-light navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo01"
+      aria-controls="navbarTogglerDemo01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand text-capitalize">
+        <button
+          mat-raised-button
+          color="primary"
+          class="fw-lighter"
+          (click)="goToHomePage()"
+        >
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+        <li class="nav-item">
+          <a class="nav-link active fw-lighter" aria-current="page"
+            >User Management Console</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-1">
+      <br />
+      <div class="card-body">
+        <div class="card-title fs-8 text-capitalize fw-lighter">add user</div>
+        <button
+          mat-raised-button
+          color="primary"
+          data-bs-toggle="modal"
+          data-bs-target="#usercreation"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="col-1">2 of 3 (wider)</div>
+    <div class="col-6">2 of 3 (wider)</div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="usercreation"
+  tabindex="-1"
+  aria-labelledby="usercreation"
+  aria-hidden="true"
+>
+  <form [formGroup]="userCreationForm">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1
+            class="modal-title fs-5 fw-lighter text-capitalize"
+            id="usercreation"
+          >
+            user creation
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            #closeModal
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col">
+              <input
+                type="text"
+                class="form-control fw-lighter"
+                placeholder="name"
+                formControlName="name"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !userCreationForm.get('name')?.valid &&
+                  (userCreationForm.get('name')?.touched ||
+                    userCreationForm.get('name')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+
+            <div class="col">
+              <input
+                type="password"
+                class="form-control fw-lighter"
+                placeholder="password"
+                formControlName="password"
+              />
+
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !userCreationForm.get('password')?.valid &&
+                  (userCreationForm.get('password')?.touched ||
+                    userCreationForm.get('password')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col">
+              <input
+                type="password"
+                class="form-control fw-lighter"
+                placeholder="retype-password"
+                formControlName="retype_password"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !userCreationForm.get('retype_password')?.valid &&
+                  (userCreationForm.get('retype_password')?.touched ||
+                    userCreationForm.get('retype_password')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            mat-raised-button
+            color="danger"
+            class="fw-lighter"
+            data-bs-dismiss="modal"
+            style="margin-right: 2%"
+          >
+            Close
+          </button>
+          <button
+            mat-raised-button
+            class="fw-lighter text-capitalize"
+            color="primary"
+            (click)="createUser()"
+          >
+            create
+          </button>
+        </div>
+        <!-- incorrect username & password -->
+        <div
+          *ngIf="showAlertofPasswordMissMatch"
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>password mismatch</strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        <mat-progress-bar
+          *ngIf="progressBar"
+          mode="indeterminate"
+        ></mat-progress-bar>
+      </div>
+    </div>
+  </form>
+</div>

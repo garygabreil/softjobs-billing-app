@@ -1,0 +1,494 @@
+<nav class="navbar bg-light navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo01"
+      aria-controls="navbarTogglerDemo01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand text-capitalize">
+        <button
+          mat-raised-button
+          color="primary"
+          class="fw-lighter"
+          (click)="goToHomePage()"
+        >
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+        <li class="nav-item">
+          <a class="nav-link active fw-lighter" aria-current="page"
+            >Management Console</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="margin-top: 1%">
+  <mat-card>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand"
+          ><mat-card-title class="fw-lighter">
+            Products #{{ totalNumberOfProducts }}
+          </mat-card-title></a
+        >
+        <button
+          mat-raised-button
+          color="primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addNewProduct"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- <li class="nav-item">
+              <a class="nav-link active" aria-current="page">Home</a>
+            </li> -->
+          </ul>
+
+          <form class="d-flex" role="search">
+            <!-- <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              style="margin-top: 5px"
+              [(ngModel)]="searchText"
+              ngDefaultControl
+            /> -->
+          </form>
+        </div>
+      </div>
+    </nav>
+  </mat-card>
+</div>
+
+<div class="container">
+  <!--Modal dialog to add new product -->
+  <div class="modal fade" id="addNewProduct" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-capitalize fw-lighter">
+            add new product/good
+          </h1>
+          <button
+            #close
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <!-- product form -->
+        <div class="modal-body">
+          <!-- product details -->
+          <form [formGroup]="productForm" class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label text-capitalize fw-lighter"
+                >Product/Good name</label
+              >
+              <input
+                type="text"
+                class="form-control form-control-sm fw-lighter"
+                formControlName="product_name"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !productForm.get('product_name')?.valid &&
+                  (productForm.get('product_name')?.touched ||
+                    productForm.get('product_name')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-capitalize fw-lighter"
+                >Purchase date</label
+              >
+              <input
+                type="date"
+                class="form-control form-control-sm"
+                formControlName="product_purchase_date"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !productForm.get('product_purchase_date')?.valid &&
+                  (productForm.get('product_purchase_date')?.touched ||
+                    productForm.get('product_purchase_date')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-6">
+              <label class="form-label text-capitalize fw-lighter"
+                >Total Quantity</label
+              >
+              <input
+                type="number"
+                maxlength="4"
+                class="form-control form-control-sm fw-lighter"
+                formControlName="product_total_quantity"
+                (change)="calculateOneQuantity()"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !productForm.get('product_total_quantity')?.valid &&
+                  (productForm.get('product_total_quantity')?.touched ||
+                    productForm.get('product_total_quantity')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-6">
+              <label for="inputAddress2" class="form-label fw-lighter"
+                >Total Rate (&#x20b9;)</label
+              >
+              <input
+                type="number"
+                class="form-control form-control-sm fw-lighter"
+                formControlName="product_total_rate"
+                (change)="calculateOneQuantity()"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !productForm.get('product_total_rate')?.valid &&
+                  (productForm.get('product_total_rate')?.touched ||
+                    productForm.get('product_total_rate')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-md-6">
+              <label for="inputCity" class="form-label fw-lighter"
+                >Rate for 1 Quantity (&#x20b9;)</label
+              >
+              <input
+                type="number"
+                class="form-control form-control-sm fw-lighter"
+                formControlName="product_rate_for_one_quantity"
+                readonly
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            style="margin-right: 2px"
+            mat-raised-button
+            color="warn"
+            data-bs-dismiss="modal"
+            class="fw-lighter"
+          >
+            close
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addNewProduct()"
+            [disabled]="!productForm.valid"
+            class="fw-lighter"
+          >
+            <mat-icon>save</mat-icon>
+            save product
+          </button>
+        </div>
+        <mat-progress-bar
+          color="primary"
+          mode="indeterminate"
+          *ngIf="progressBar"
+        ></mat-progress-bar>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- progress bar -->
+<div class="container">
+  <br />
+  <mat-progress-bar
+    mode="indeterminate"
+    *ngIf="progressBarForLoadingAllTheProducts"
+  ></mat-progress-bar>
+  <div *ngIf="allProductArray.length === 0"></div>
+</div>
+
+<!-- product list table -->
+<div class="container">
+  <br />
+
+  <mat-card>
+    <div *ngIf="allProductArray.length > 0">
+      <!-- search bar -->
+      <div class="col-6">
+        <div [(ngModel)]="searchText" ngDefaultControl>
+          <input
+            type="search"
+            class="form-control fw-lighter"
+            placeholder="search"
+            style="margin-bottom: 8px"
+          />
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table
+          class="table table-sm table-hover fw-lighter text-capitalize text-wrap"
+        >
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">name</th>
+              <th scope="col">purchase date</th>
+              <th scope="col">total purchase rate(&#x20b9;)</th>
+              <th scope="col">in-stock(unit)</th>
+              <th scope="col">price/rate(&#x20b9;) for 1 Unit</th>
+              <th scope="col">available(unit)</th>
+              <th scope="col">action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let product of allProductArray | search : searchText;
+                let i = index
+              "
+            >
+              <td class="text-capitalize text-wrap">{{ i + 1 }}</td>
+              <td class="text-capitalize text-wrap">
+                {{ product[1]["product_name"] || "no data" }}
+              </td>
+              <td class="text-capitalize text-wrap">
+                {{ product[1]["product_purchase_date"] || "no data" }}
+              </td>
+              <td class="text-capitalize text-wrap">
+                {{ product[1]["product_total_rate"] || "no data" }}
+              </td>
+              <td class="text-capitalize text-wrap">
+                {{ product[1]["product_total_quantity"] || "no data" }}
+              </td>
+              <td class="text-capitalize text-wrap">
+                {{ product[1]["product_rate_for_one_quantity"] || "no data" }}
+              </td>
+              <td>
+                {{ product[1]["product_total_quantity"] || "no data" }}
+              </td>
+              <td>
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  aria-label="Example icon-button with a menu"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button
+                    mat-menu-item
+                    data-bs-toggle="modal"
+                    data-bs-target="#editProductModel"
+                    color="primary"
+                  >
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="editProduct(product[0])"
+                    >
+                      <mat-icon style="color: white">edit</mat-icon>
+                      <span>edit</span>
+                    </button>
+                  </button>
+                  <button
+                    mat-menu-item
+                    (click)="deleteProduct(product[0])"
+                    color="warn"
+                  >
+                    <mat-icon>delete</mat-icon>
+                    <span>delete</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<!-- edit model -->
+<!--Modal dialog to add new product -->
+<div class="modal fade" id="editProductModel" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-capitalize fw-lighter">
+          update product #{{ uniqueProductId }}
+        </h1>
+        <button
+          #closeUpdateModel
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!-- product form -->
+      <div class="modal-body">
+        <!-- product details -->
+        <form [formGroup]="productForm" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-lighter text-capitalize"
+              >Product/Good name</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-sm fw-lighter"
+              formControlName="product_name"
+            />
+            <span
+              style="color: red"
+              class="fw-lighter"
+              *ngIf="
+                !productForm.get('product_name')?.valid &&
+                (productForm.get('product_name')?.touched ||
+                  productForm.get('product_name')?.dirty)
+              "
+              >Required</span
+            >
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-lighter text-capitalize"
+              >Purchase date</label
+            >
+            <input
+              type="date"
+              class="form-control form-control-sm fw-lighter"
+              formControlName="product_purchase_date"
+            />
+            <span
+              style="color: red"
+              class="fw-lighter"
+              *ngIf="
+                !productForm.get('product_purchase_date')?.valid &&
+                (productForm.get('product_purchase_date')?.touched ||
+                  productForm.get('product_purchase_date')?.dirty)
+              "
+              >Required</span
+            >
+          </div>
+          <div class="col-6">
+            <label class="form-label text-capitalize fw-lighter"
+              >Total Quantity</label
+            >
+            <input
+              type="number"
+              maxlength="4"
+              class="form-control form-control-sm fw-lighter"
+              formControlName="product_total_quantity"
+              (change)="calculateOneQuantity()"
+            />
+            <span
+              style="color: red"
+              class="fw-lighter"
+              *ngIf="
+                !productForm.get('product_total_quantity')?.valid &&
+                (productForm.get('product_total_quantity')?.touched ||
+                  productForm.get('product_total_quantity')?.dirty)
+              "
+              >Required</span
+            >
+          </div>
+          <div class="col-6">
+            <label for="inputAddress2" class="form-label fw-lighter"
+              >Total Rate (&#x20b9;)</label
+            >
+            <input
+              type="number"
+              class="form-control form-control-sm fw-lighter"
+              formControlName="product_total_rate"
+              (change)="calculateOneQuantity()"
+            />
+            <span
+              style="color: red"
+              class="fw-lighter"
+              *ngIf="
+                !productForm.get('product_total_rate')?.valid &&
+                (productForm.get('product_total_rate')?.touched ||
+                  productForm.get('product_total_rate')?.dirty)
+              "
+              >Required</span
+            >
+          </div>
+          <div class="col-md-6">
+            <label for="inputCity" class="form-label fw-lighter"
+              >Rate for 1 Quantity (&#x20b9;)</label
+            >
+            <input
+              type="number"
+              class="form-control form-control-sm fw-lighter"
+              formControlName="product_rate_for_one_quantity"
+              readonly
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          mat-raised-button
+          color="warn"
+          data-bs-dismiss="modal"
+          style="margin-right: 1%"
+          class="fw-lighter"
+        >
+          close
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="updateProductById()"
+          [disabled]="!productForm.valid"
+          class="fw-lighter"
+        >
+          update
+        </button>
+      </div>
+      <mat-progress-bar
+        id="update"
+        mode="indeterminate"
+        color="primary"
+        *ngIf="progressBarForUpdation"
+      ></mat-progress-bar>
+      <br />
+    </div>
+  </div>
+</div>

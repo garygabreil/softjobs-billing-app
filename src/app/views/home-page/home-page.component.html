@@ -1,0 +1,586 @@
+<!-- nav bar start-->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarTogglerDemo03"
+      aria-controls="navbarTogglerDemo03"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <button mat-raised-button color="primary" class="fs-5 fw-lighter">
+      <!-- <img src="../../../assets/softjobslogo.jpg" alt="" height="25px" /> -->
+      Softjobs Billing Software
+    </button>
+
+    <!-- <button class="fw-lighter fs-5">
+      <img src="../../../assets/softjobslogo.jpg" alt="" height="25px" />
+      Softjobs Billing Software
+    </button> -->
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"></li>
+        <li class="nav-item"></li>
+        <li class="nav-item"></li>
+      </ul>
+      <form class="d-flex" role="search">
+        <!-- <button class="btn btn-warning fw-lighter" style="color: white">
+          Signout
+        </button> -->
+      </form>
+    </div>
+  </div>
+</nav>
+<!-- nav bar end-->
+
+<div class="list-group list-group-checkable d-grid gap-2 border-0 w-auto">
+  <input
+    class="list-group-item-check pe-none text-capitalize fw-lighter"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios1"
+  />
+  <label
+    class="list-group-item rounded-3 py-3 text-capitalize fw-lighter"
+    for="listGroupCheckableRadios1"
+    data-bs-toggle="modal"
+    data-bs-target="#invoice"
+    (click)="uniqueValueGeneration()"
+  >
+    Invoice/Quotation Generation
+    <span class="d-block small opacity-50 text-capitalize fw-lighter"
+      >To create invoices/quotation
+    </span>
+  </label>
+
+  <input
+    class="list-group-item-check pe-none text-capitalize fw-lighter"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios3"
+    value=""
+  />
+  <label
+    class="list-group-item rounded-3 py-3 text-capitalize fw-lighter"
+    (click)="goToInventoryPage()"
+  >
+    Inventory/Products/Goods List
+    <span class="d-block small opacity-50 text-capitalize fw-lighter"
+      >To add and change of goods/product or inventory list</span
+    >
+  </label>
+
+  <input
+    class="list-group-item-check pe-none text-capitalize fw-lighter"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios3"
+    value=""
+  />
+  <label
+    class="list-group-item rounded-3 py-3 text-capitalize fw-lighter"
+    (click)="goToBillingInfoPage()"
+  >
+    Billing Information
+    <span class="d-block small opacity-50 text-capitalize fw-lighter"
+      >Get billing information</span
+    >
+  </label>
+  <!-- 
+  <input
+    class="list-group-item-check pe-none text-capitalize fw-lighter"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios4"
+  />
+  <label
+    class="list-group-item rounded-3 py-3 text-capitalize fw-lighter"
+    (click)="goToUserInfoPage()"
+  >
+    user management
+    <span class="d-block small opacity-50 text-capitalize fw-lighter"
+      >grant access to users</span
+    >
+  </label> -->
+
+  <input
+    class="list-group-item-check pe-none text-capitalize fw-lighter"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios4"
+  />
+
+  <!-- Billing information -->
+  <input
+    class="list-group-item-check pe-none"
+    type="radio"
+    name="listGroupCheckableRadios"
+    id="listGroupCheckableRadios4"
+  />
+</div>
+
+<!-- modal for Invoice -->
+<div
+  class="modal fade"
+  id="invoice"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <form [formGroup]="invoiceForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h1 class="modal-title fs-5 fw-lighter" id="exampleModalLabel">
+              Invoice/Quotation Generation
+            </h1>
+            <div class="fs-8 text-capitalize fw-lighter">
+              enter customer details
+            </div>
+          </div>
+
+          <br />
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="resetInvoiceForm()"
+            #close
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-sm">
+              <input
+                type="text"
+                class="form-control form-control-sm text-capitalize"
+                placeholder="Name"
+                formControlName="customer_name"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="name of the customer"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('customer_name')?.valid &&
+                  (invoiceForm.get('customer_name')?.touched ||
+                    invoiceForm.get('customer_name')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+
+            <div class="col-sm">
+              <input
+                type="number"
+                class="form-control form-control-sm text-capitalize"
+                placeholder="Phone Number"
+                formControlName="customer_phone_number"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('customer_phone_number')?.valid &&
+                  (invoiceForm.get('customer_phone_number')?.touched ||
+                    invoiceForm.get('customer_phone_number')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+          </div>
+          <div class="row g-3" style="margin-top: 0.2%">
+            <div class="col-lg">
+              <input
+                type="text"
+                class="form-control form-control-sm text-capitalize"
+                placeholder="Address"
+                formControlName="customer_address"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('customer_address')?.valid &&
+                  (invoiceForm.get('customer_address')?.touched ||
+                    invoiceForm.get('customer_address')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+          </div>
+          <div class="row g-3" style="margin-top: 0.2%">
+            <div class="col-sm">
+              <select
+                class="form-select form-select-sm fw-lighter text-capitalize"
+                formControlName="customer_city"
+              >
+                <option selected disabled value>Select the City</option>
+                <option value="Kallakurichi">Kallakurichi</option>
+                <option value="Sankarapuram">Sankarapuram</option>
+                <option value="Thirukovilur">Thirukovilur</option>
+                <option value="Rishivandiyam">Rishivandiyam</option>
+                <option value="Thiyagadurugam">Thiyagadurugam</option>
+                <option value="Ulundurpet">Ulundurpet</option>
+                <option value="Chinnasalem">Chinnasalem</option>
+                <option value="Thirunavalur">Thirunavalur</option>
+                <option value="Kalvarayanmalai">Kalvarayanmalai</option>
+              </select>
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('customer_city')?.valid &&
+                  (invoiceForm.get('customer_city')?.touched ||
+                    invoiceForm.get('customer_city')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+          </div>
+          <hr />
+          <div class="fw-lighter text-capitalize" style="margin-bottom: 2%">
+            Billing information
+          </div>
+          <div class="row g-3">
+            <div class="col-sm" style="margin: top 1px">
+              <input
+                type="date"
+                class="form-control fw-lighter form-control-sm"
+                placeholder="bill date"
+                formControlName="billing_date"
+                id="billing_date"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('billing_date')?.valid &&
+                  (invoiceForm.get('billing_date')?.touched ||
+                    invoiceForm.get('billing_date')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+
+            <div class="col-sm">
+              <input
+                type="number"
+                class="form-control form-control-sm text-capitalize"
+                placeholder="Invoice #"
+                readonly
+                formControlName="billing_uniqueNumber"
+              />
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('billing_uniqueNumber')?.valid &&
+                  (invoiceForm.get('billing_uniqueNumber')?.touched ||
+                    invoiceForm.get('billing_uniqueNumber')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-sm">
+              <select
+                class="form-select form-select-sm fw-lighter text-capitalize"
+                formControlName="billing_delivery_type"
+              >
+                <option selected disabled value>delivery_mode</option>
+                <option value="direct">direct</option>
+                <option value="courier">courier</option>
+                <option value="quotation">quotation</option>
+                <option value="customer_point">customer_point</option>
+              </select>
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('billing_delivery_type')?.valid &&
+                  (invoiceForm.get('billing_delivery_type')?.touched ||
+                    invoiceForm.get('billing_delivery_type')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+            <div class="col-sm">
+              <select
+                class="form-select form-select-sm fw-lighter text-capitalize"
+                formControlName="billing_status"
+              >
+                <option selected disabled value>status</option>
+                <option value="paid">paid</option>
+                <option value="unpaid">unpaid</option>
+                <option value="quotation">quotation</option>
+              </select>
+              <span
+                style="color: red"
+                class="fw-lighter"
+                *ngIf="
+                  !invoiceForm.get('billing_status')?.valid &&
+                  (invoiceForm.get('billing_status')?.touched ||
+                    invoiceForm.get('billing_status')?.dirty)
+                "
+                >Required</span
+              >
+            </div>
+          </div>
+          <hr />
+          <div
+            class="text-capitalize fw-lighter"
+            formArrayName="billing_product_information"
+          >
+            product information
+          </div>
+          <p></p>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            style="
+              --bs-btn-padding-y: 0.25rem;
+              --bs-btn-padding-x: 0.5rem;
+              --bs-btn-font-size: 0.75rem;
+            "
+            *ngIf="showAddProductItemButton"
+            (click)="newProductItemForm()"
+          >
+            +
+          </button>
+
+          <tr
+            formArrayName="billing_product_information"
+            *ngFor="let items of productsItem.controls; let i = index"
+          >
+            <td>
+              <div [formGroupName]="i" class="row g-1">
+                <div class="col-lg" style="margin: top 1px">
+                  <label class="text-capitalize fw-lighter">Product Name</label>
+                  <select
+                    class="form-control fw-lighter form-control-sm text-captialize"
+                    formControlName="billing_product_name"
+                    placeholder="product name"
+                    style="padding: 1%; width: 170px"
+                    (change)="
+                      getProductDetailsByOnOptionSelected(
+                        i,
+                        $any($event.target).value
+                      )
+                    "
+                    (change)="calculateGrandTotal()"
+                  >
+                    <option selected disabled value>select product</option>
+                    <option
+                      *ngFor="
+                        let producutName of productListArray;
+                        let i = index
+                      "
+                      value="{{ producutName[0].product_name }} {{
+                        producutName[1]
+                      }}"
+                    >
+                      {{ producutName[0].product_name || null }}
+                    </option>
+                    <span
+                      style="color: red"
+                      class="fw-lighter"
+                      *ngIf="
+                        !invoiceForm.get('billing_product_name')?.valid &&
+                        (invoiceForm.get('billing_product_name')?.touched ||
+                          invoiceForm.get('billing_product_name')?.dirty)
+                      "
+                      >Required</span
+                    >
+                  </select>
+                </div>
+                <div class="col-lg" style="margin: top 1px">
+                  <label class="text-capitalize fw-lighter">quantity</label>
+
+                  <input
+                    type="input"
+                    class="form-control fw-lighter form-control-sm text-truncate"
+                    placeholder="quantity"
+                    formControlName="billing_quantity"
+                    style="padding: 1%; width: 55px"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="quantity"
+                    (change)="changeOnQuantity(i, $any($event.target).value)"
+                    (change)="calculateGrandTotal()"
+                  />
+                </div>
+                <div class="col-lg" style="margin: top 1px">
+                  <label class="text-capitalize fw-lighter">per rate</label>
+
+                  <input
+                    type="input"
+                    class="form-control fw-lighter form-control-sm text-truncate"
+                    placeholder="rate"
+                    formControlName="billing_rate"
+                    style="padding: 1%; width: 60px"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="rate"
+                    (change)="changeOnRate(i, $any($event.target).value)"
+                    (change)="calculateGrandTotal()"
+                  />
+                </div>
+                <div class="col-lg" style="margin: top 1px">
+                  <label class="text-capitalize fw-lighter">total</label>
+                  <input
+                    type="input"
+                    class="form-control fw-lighter form-control-sm text-truncate"
+                    placeholder="total amount"
+                    formControlName="billing_total_amount"
+                    style="width: 100px"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="total amount"
+                    readonly
+                  />
+                </div>
+                <div class="col-sm">
+                  <br />
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm fw-lighter"
+                    (click)="newProductItemForm()"
+                  >
+                    add(+)
+                  </button>
+                </div>
+                <div class="col-lg">
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm fw-lighter"
+                    (click)="removeProductItem(i)"
+                  >
+                    remove(-)
+                  </button>
+                </div>
+              </div>
+              <p></p>
+            </td>
+          </tr>
+          <hr />
+          <!-- <a
+            class="fw-lighter text-capitalize"
+            href="javascript:void(0);"
+            (click)="calculateGST()"
+            >Tax Calculation</a
+          > -->
+          <br />
+          <a
+            class="fw-lighter text-capitalize"
+            href="javascript:void(0);"
+            (click)="clearGSTCalculation()"
+            >clear tax</a
+          >
+
+          <div></div>
+          <br />
+          <div class="fw-lighter text-capitalize" style="margin-left: 60%">
+            Grand Total: (&#x20b9;)
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              label="grand total"
+              formControlName="billing_grantTotal"
+              readonly
+            />
+            <span
+              style="color: red"
+              class="fw-lighter"
+              *ngIf="
+                !invoiceForm.get('billing_grantTotal')?.valid &&
+                (invoiceForm.get('billing_grantTotal')?.touched ||
+                  invoiceForm.get('billing_grantTotal')?.dirty)
+              "
+              >Required</span
+            >
+
+            <div *ngIf="showGST">
+              GST 18%: (&#x20b9;) {{ newGstAmount }} <br />
+
+              Net Pay: <br />
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                label="grand total"
+                formControlName="billing_netPay"
+                readonly
+              />
+            </div>
+          </div>
+          <p></p>
+          <div class="modal-footer">
+            <button
+              mat-raised-button
+              color="warn"
+              class="fw-lighter"
+              data-bs-dismiss="modal"
+              style="margin-right: 1%"
+              (click)="resetInvoiceForm()"
+            >
+              Close
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              class="fw-lighter"
+              (click)="saveInvoices()"
+              [disabled]="!invoiceForm.valid"
+              *ngIf="invoiceSaved == false"
+            >
+              <mat-icon>save</mat-icon>
+              Save Invoice/Bills
+            </button>
+            <br />
+
+            <button
+              mat-raised-button
+              color="primary"
+              class="fw-lighter"
+              style="margin-left: 2%"
+              *ngIf="invoiceSaved"
+              (click)="generateInvoice()"
+              [routerLink]="['/bills', firebaseDocumentIdForInvoiceGeneration]"
+            >
+              <mat-icon>cloud_download</mat-icon>
+              Generate Invoice
+            </button>
+
+            <button
+              mat-raised-button
+              color="accent"
+              class="fw-lighter"
+              style="margin-left: 2%"
+              (click)="resetInvoiceForm()"
+              *ngIf="invoiceSaved"
+            >
+              <mat-icon>add_circle_outline</mat-icon>
+              New Invoice
+            </button>
+
+            <mat-progress-bar
+              *ngIf="progressbarForSavingInvoice"
+              mode="indeterminate"
+            ></mat-progress-bar>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

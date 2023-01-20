@@ -1,0 +1,184 @@
+<div class="container">
+  <button
+    mat-raised-button
+    color="primary"
+    style="margin-top: 2%"
+    id="printPageButton"
+    (click)="goToHome()"
+  >
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    id="printPageButton"
+    style="margin-top: 2%; margin-left: 1%"
+    onClick="window.print();"
+  >
+    <mat-icon> local_printshop</mat-icon>
+  </button>
+</div>
+<div class="container mt-5 mb-3">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="d-flex flex-row p-2">
+          <img src="./assets/softjobslogo.jpg" width="120" />
+          <div class="d-flex flex-row">
+            <div class="container">
+              <!-- <span class="fw-bold fs-4 text-uppercase">Softjobs</span> -->
+              <br />
+              <small class="fw-bold fs-4 text-uppercase fw-lighter"
+                >Softjobs</small
+              >
+              <br />
+              <small class="text-capitalize fs-15 fw-lighter"
+                >Hardware software developing, Computer sale & Services
+              </small>
+              <br />
+              <small class="text-capitalize fs-7 fw-lighter"
+                >kacheri road, kallakurichi - 606 202.
+              </small>
+              <br />
+              <small class="text-capitalize fs-7 fw-lighter"
+                >Tel: 04151-228228, 226284, 9994740907
+              </small>
+              <small class="text-capitalize fs-7 fw-lighter"
+                >GSTIN: 33ADYPT1004G1ZJ
+              </small>
+            </div>
+            <div class="container">
+              <div
+                class="text-uppercase fs-3 fw-bold fw-lighter"
+                style="padding: 0"
+              >
+                <u> Invoice </u>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="table-responsive p-2">
+          <table class="table table-borderless">
+            <tbody>
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="card" style="width: 18rem; padding: 2%">
+                      <u class="text-capitalize fs-6 fw-lighter"
+                        >Customer Information</u
+                      >
+                      <span class="text-capitalize fs-6 fw-lighter">
+                        {{ customer_name }},
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        {{ customer_address }},</span
+                      >
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        {{ customer_city }},
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        Phone number: {{ customer_phone_number }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="card" style="width: 18rem; padding: 2%">
+                      <span class="text-capitalize fs-6 fw-lighter">
+                        <u>billing information</u>
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        invoice number: #{{ billing_uniqueNumber }}
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        date: {{ billing_date }}
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        Delivery type: {{ billing_delivery_type }}
+                      </span>
+                      <span class="text-capitalize fs-9 fw-lighter">
+                        Status: {{ billing_status }}
+                      </span>
+
+                      <span class="text-capitalize fs-9 fw-lighter"> </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div class="products p-2">
+          <table class="table table-borderless text-capitalize fs-9 fw-lighter">
+            <tbody>
+              <tr class="add">
+                <td>product name</td>
+                <td>quantity</td>
+                <td>rate</td>
+                <td class="text-center">total amount</td>
+              </tr>
+              <tr class="content" *ngFor="let i of billing_product_information">
+                <td>{{ i.billing_product_name | stringSlice : -20 }}</td>
+                <td>{{ i.billing_quantity }}</td>
+                <td>&#x20b9; {{ i.billing_rate }}</td>
+                <td class="text-center">
+                  &#x20b9;{{ i.billing_total_amount }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- total Information -->
+        <hr />
+        <div class="products p-2">
+          <table class="table table-borderless text-capitalize fs-9 fw-lighter">
+            <tbody>
+              <tr class="add">
+                <td></td>
+                <td>Subtotal (&#x20b9;)</td>
+                <td>GST(&#x20b9;)</td>
+                <td class="text-center">Total (&#x20b9;)</td>
+              </tr>
+              <tr class="content">
+                <td></td>
+                <td>{{ billing_grantTotal }}</td>
+                <td>{{ billing_gst }}</td>
+                <td class="text-center">{{ billing_netPay || 0 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr />
+        <div class="address p-2">
+          <p class="fw-lighter"></p>
+          <!-- <table class="table table-borderless">
+            <tbody>
+              <tr class="add">
+                <td>Bank Details</td>
+              </tr>
+              <tr class="content">
+                <td>
+                  Bank Name : ADS BANK <br />
+                  Swift Code : ADS1234Q <br />
+                  Account Holder : Jelly Pepper <br />
+                  Account Number : 5454542WQR <br />
+                </td>
+              </tr>
+            </tbody>
+          </table> -->
+          <button
+            mat-raised-button
+            color="primary"
+            id="printPageButton"
+            style="margin-top: 2%; margin-left: 90%"
+            onClick="window.print();"
+          >
+            <mat-icon> local_printshop</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

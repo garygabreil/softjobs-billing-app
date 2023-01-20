@@ -1,0 +1,47 @@
+<body class="text-center" cz-shortcut-listen="true">
+  <main class="form-signin w-100 m-auto">
+    <form [formGroup]="loginForm">
+      <img
+        class="mb-4"
+        src="../../../assets/softjobslogo.jpg"
+        alt=""
+        width="100"
+        height="100
+        "
+      />
+      <div class="text-capitalize fs-4 fw-lighter">
+        Softjobs Billing Software
+      </div>
+
+      <div class="form-floating fw-lighter">
+        <input
+          type="text"
+          class="form-control fw-lighter"
+          id="floatingInput"
+          placeholder="name@example.com"
+          formControlName="username"
+        />
+        <label class="fw-lighter">Username</label>
+      </div>
+      <div class="form-floating fw-lighter">
+        <input
+          type="text"
+          class="form-control fw-lighter"
+          placeholder="Password"
+          formControlName="password"
+        />
+        <label class="fw-lighter">Password</label>
+      </div>
+
+      <div class="checkbox mb-3 fw-lighter"></div>
+      <button
+        class="w-100 btn btn-lg btn-primary fw-lighter"
+        (click)="login()"
+        type="submit"
+      >
+        Sign in
+      </button>
+      <p class="mt-5 mb-3 text-muted fw-lighter">©Copyrights 2023</p>
+    </form>
+  </main>
+</body>
