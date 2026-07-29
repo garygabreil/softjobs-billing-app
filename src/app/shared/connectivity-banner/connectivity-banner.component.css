@@ -1,0 +1,72 @@
+.sj-connectivity-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+  background: linear-gradient(90deg, #b45309, #d97706);
+  color: #fff;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+.sj-connectivity-banner__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.7rem 1rem;
+  padding-bottom: max(0.7rem, env(safe-area-inset-bottom, 0px));
+}
+
+.sj-connectivity-banner__icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.sj-connectivity-banner__text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500;
+}
+
+.sj-connectivity-banner__text span {
+  opacity: 0.92;
+  font-weight: 400;
+}
+
+.sj-connectivity-chip {
+  position: fixed;
+  top: calc(0.65rem + env(safe-area-inset-top, 0px));
+  right: 0.65rem;
+  z-index: 2500;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+  font-size: 0.72rem;
+  font-weight: var(--sj-font-weight, 400);
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+@media (max-width: 576px) {
+  .sj-connectivity-banner__text {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .sj-connectivity-banner__text span {
+    font-size: 0.74rem;
+  }
+}

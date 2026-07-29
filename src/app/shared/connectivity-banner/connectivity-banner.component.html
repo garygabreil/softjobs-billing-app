@@ -1,0 +1,13 @@
+<div class="sj-connectivity-banner" *ngIf="!(connectivity.online$ | async)" role="alert" aria-live="assertive">
+  <div class="sj-connectivity-banner__inner">
+    <span class="sj-connectivity-banner__icon" aria-hidden="true">📡</span>
+    <div class="sj-connectivity-banner__text">
+      <strong>No internet connection</strong>
+      <span>Bills and inventory may not load or save until you're back online.</span>
+    </div>
+  </div>
+</div>
+
+<div class="sj-connectivity-chip" *ngIf="!(connectivity.online$ | async)" aria-hidden="true">
+  Offline
+</div>

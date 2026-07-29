@@ -1,0 +1,50 @@
+<div class="sj-shell">
+  <aside class="sj-sidebar">
+    <div class="sj-sidebar__brand" (click)="goHome()">
+      <img src="assets/softjobslogo.jpg" alt="SoftJobs" />
+      <div>
+        <strong>SoftJobs</strong>
+        <span>Billing</span>
+      </div>
+    </div>
+
+    <nav class="sj-sidebar__nav">
+      <button
+        type="button"
+        class="sj-nav-item"
+        [class.sj-nav-item--active]="active === 'home'"
+        (click)="goHome()"
+      >
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </button>
+      <button
+        type="button"
+        class="sj-nav-item"
+        [class.sj-nav-item--active]="active === 'inventory'"
+        (click)="goInventory()"
+      >
+        <mat-icon>inventory_2</mat-icon>
+        Inventory
+      </button>
+      <button
+        type="button"
+        class="sj-nav-item"
+        [class.sj-nav-item--active]="active === 'billing'"
+        (click)="goBilling()"
+      >
+        <mat-icon>receipt_long</mat-icon>
+        Billing History
+      </button>
+    </nav>
+
+    <div class="sj-sidebar__footer">
+      <mat-icon>location_on</mat-icon>
+      <span>Kallakurichi</span>
+    </div>
+  </aside>
+
+  <div class="sj-shell__body">
+    <ng-content></ng-content>
+  </div>
+</div>

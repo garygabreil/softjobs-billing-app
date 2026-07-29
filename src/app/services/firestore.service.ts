@@ -58,6 +58,18 @@ export class FirestoreService {
     return this.firestore.collection('invoices').doc(id).delete();
   }
 
+  createCustomerInsideFirestoreDB(doc: any) {
+    return this.firestore.collection('Customers').add(doc);
+  }
+
+  getAllCustomersFromFirestoreDB() {
+    return this.firestore.collection('Customers').snapshotChanges();
+  }
+
+  updateCustomerById(id: string, doc: any) {
+    return this.firestore.collection('Customers').doc(id).update(doc);
+  }
+
   //user
   /* database service to create user inside firestore*/
   createUserInsideFirestoreDB(doc: any) {

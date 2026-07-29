@@ -9,27 +9,18 @@ import { LoginComponent } from './views/login/login.component';
 import { UserInfoComponent } from './views/user-info/user-info.component';
 
 const routes: Routes = [
-  { component: HomePageComponent, path: '' },
-  { component: HomePageComponent, path: 'home' },
-  { component: BillingPageComponent, path: 'bills/:id' },
-  { component: InventoryPageComponent, path: 'product-dashboard' },
-  { component: BillingInfoComponent, path: 'billing-dashboard' },
-  {
-    component: ShowBillInformationComponent,
-    path: 'view/:id',
-  },
-  {
-    component: LoginComponent,
-    path: 'login',
-  },
-  {
-    component: UserInfoComponent,
-    path: 'login-info',
-  },
+  { path: '', component: HomePageComponent },
+  { path: 'home', component: HomePageComponent },
+  { path: 'bills/:id', component: BillingPageComponent },
+  { path: 'product-dashboard', component: InventoryPageComponent },
+  { path: 'billing-dashboard', component: BillingInfoComponent },
+  { path: 'view/:id', component: ShowBillInformationComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'login-info', component: UserInfoComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

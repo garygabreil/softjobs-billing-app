@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,17 @@ import { MatListModule } from '@angular/material/list';
 import { ShowBillInformationComponent } from './views/show-bill-information/show-bill-information.component';
 import { LoginComponent } from './views/login/login.component';
 import { UserInfoComponent } from './views/user-info/user-info.component';
+import { InvoiceSheetComponent } from './views/invoice-sheet/invoice-sheet.component';
+import { ConnectivityBannerComponent } from './shared/connectivity-banner/connectivity-banner.component';
+import { AppNavComponent } from './shared/app-nav/app-nav.component';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+export function enableFirestoreOfflinePersistence(afs: AngularFirestore) {
+  return () =>
+    afs.firestore.enablePersistence({ synchronizeTabs: true }).catch(() => {
+      /* persistence unavailable in private mode or multi-tab */
+    });
+}
 
 @NgModule({
   declarations: [
@@ -43,6 +54,9 @@ import { UserInfoComponent } from './views/user-info/user-info.component';
     ShowBillInformationComponent,
     LoginComponent,
     UserInfoComponent,
+    InvoiceSheetComponent,
+    ConnectivityBannerComponent,
+    AppNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +80,14 @@ import { UserInfoComponent } from './views/user-info/user-info.component';
     MatTooltipModule,
     MatListModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: enableFirestoreOfflinePersistence,
+      deps: [AngularFirestore],
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

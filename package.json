@@ -6,6 +6,8 @@
     "ng": "ng",
     "start": "ng build --base-href ./ && electron .",
     "build": "ng build",
+    "build:web": "ng build --configuration production --base-href /",
+    "deploy": "npm run build:web && firebase deploy --only hosting",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

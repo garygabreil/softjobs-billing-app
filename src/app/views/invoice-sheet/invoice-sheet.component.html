@@ -1,0 +1,189 @@
+<!-- GST Invoice — matches physical delivery challan -->
+<div class="invoice invoice-gst" *ngIf="isGstBill">
+  <div class="invoice-gst__banner">
+    <span>Invoice cum Delivery Challan</span>
+    <span>Cash / Credit Bill</span>
+  </div>
+
+  <div class="invoice-gst__header">
+    <div class="invoice-gst__brand">
+      <img src="./assets/softjobslogo.jpg" alt="SoftJobs" class="invoice-logo" />
+      <div>
+        <div class="invoice-gst__name">SOFTJOBS</div>
+        <div class="invoice-gst__tagline">Hardware Software Developing Computer Sales &amp; Services</div>
+        <div class="invoice-gst__address">Katchery road, Kallakurichi - 606 202.</div>
+        <div class="invoice-gst__contact">Tel : 04151-290013, Cell : 9994740907</div>
+      </div>
+    </div>
+
+    <div class="invoice-gst__meta">
+      <div class="meta-row"><span>Invoice No.</span><strong>{{ billing_uniqueNumber }}</strong></div>
+      <div class="meta-row"><span>Date</span><strong>{{ billing_date }}</strong></div>
+      <div class="meta-row"><span>GST No.</span><strong>{{ gstin }}</strong></div>
+      <div class="meta-row"><span>Destination</span><strong>{{ billing_destination || customer_city }}</strong></div>
+      <div class="meta-row"><span>Terms / of Delivery</span><strong>{{ billing_delivery_type }}</strong></div>
+    </div>
+  </div>
+
+  <div class="invoice-gst__customer">
+    <span>Customer Name:</span>
+    <strong>{{ customer_name }}</strong>
+    <span class="invoice-gst__customer-extra" *ngIf="customer_address || customer_city">
+      — {{ customer_address }}<span *ngIf="customer_city">, {{ customer_city }}</span>
+      <span *ngIf="customer_phone_number"> · {{ customer_phone_number }}</span>
+    </span>
+  </div>
+
+  <table class="invoice-table invoice-table--gst">
+    <thead>
+      <tr>
+        <th class="col-desc">Description of Goods</th>
+        <th class="col-qty">Quantity</th>
+        <th class="col-rate">Rate</th>
+        <th class="col-per">Per</th>
+        <th class="col-amt">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of billing_product_information">
+        <td>{{ item.billing_product_name }}</td>
+        <td class="text-center">{{ item.billing_quantity }}</td>
+        <td class="text-end">{{ formatAmount(item.billing_rate) }}</td>
+        <td class="text-center">{{ unitFor(item) }}</td>
+        <td class="text-end">{{ formatAmount(item.billing_total_amount) }}</td>
+      </tr>
+      <tr *ngFor="let _ of emptyRows" class="empty-row">
+        <td>&nbsp;</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr class="total-row">
+        <td class="eoe">E.&amp;O.E.</td>
+        <td colspan="2"></td>
+        <td class="text-end total-label">Sub Total</td>
+        <td class="text-end">{{ formatAmount(billing_grantTotal) }}</td>
+      </tr>
+      <tr class="total-row" *ngIf="billing_gst">
+        <td colspan="3"></td>
+        <td class="text-end total-label">GST 18%</td>
+        <td class="text-end">{{ formatAmount(billing_gst) }}</td>
+      </tr>
+      <tr class="total-row grand-total">
+        <td colspan="3"></td>
+        <td class="text-end total-label">Grand Total</td>
+        <td class="text-end">{{ formatAmount(billing_netPay || billing_grantTotal) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="invoice-gst__footer">
+    <p class="invoice-note">
+      Note: Goods once sold cannot be taken back or exchanged above goods are only in the form of
+      components / Sub assemblies / Unless it is specified as a 'PC'
+    </p>
+    <p class="invoice-declaration">
+      we declare that this invoice shows the actual price of the goods described and all particulars
+      are true and correct, Received all above goods in good condition &amp; correct quantities
+    </p>
+    <div class="invoice-signatures">
+      <div>Receiver's Signature</div>
+      <div class="sign-for">
+        <span>For : SOFTJOBS</span>
+        <em>Kallakurichi</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Non-GST Bill — matches physical cash bill -->
+<div class="invoice invoice-non-gst" *ngIf="!isGstBill">
+  <div class="invoice-non-gst__header">
+    <img src="./assets/softjobslogo.jpg" alt="SoftJobs" class="invoice-logo" />
+    <div class="invoice-non-gst__title-block">
+      <h1>SOFTJOBS</h1>
+      <div class="tamil">சாப்ட் ஜாப்ஸ்</div>
+      <p class="services">
+        Computer Sales &amp; Services, Toner Refilling, Online Entry, Printer service, Browsing DTP
+      </p>
+      <p class="address">63B, Katchery road, Sathiya Sweets Opp. Kallakurichi-606202</p>
+    </div>
+    <div class="invoice-non-gst__pc-icon" aria-hidden="true">🖥</div>
+  </div>
+
+  <div class="invoice-non-gst__contact-bar">
+    <span>Cell: 9994740907</span>
+    <span>Tel: 04151-290013</span>
+    <span>jtittus@gmail.com</span>
+  </div>
+
+  <div class="invoice-non-gst__doc-row">
+    <div class="doc-no">
+      <span>No.</span>
+      <strong>{{ billing_uniqueNumber }}</strong>
+    </div>
+    <div class="doc-date">
+      <span>Date:</span>
+      <strong>{{ billing_date }}</strong>
+    </div>
+  </div>
+
+  <div class="invoice-non-gst__to">
+    <span>To</span>
+    <strong>{{ customerLine }}</strong>
+  </div>
+
+  <table class="invoice-table invoice-table--non-gst">
+    <thead>
+      <tr>
+        <th class="col-sno">S.No</th>
+        <th class="col-particulars">Particulars</th>
+        <th class="col-qty">Qty</th>
+        <th class="col-rate">Rate</th>
+        <th class="col-rs">Rs</th>
+        <th class="col-ps">Ps</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of billing_product_information; let i = index">
+        <td class="text-center">{{ i + 1 }}</td>
+        <td>{{ item.billing_product_name }}</td>
+        <td class="text-center">{{ item.billing_quantity }}</td>
+        <td class="text-end">{{ formatAmount(item.billing_rate) }}</td>
+        <td class="text-end">{{ rupeesFrom(item.billing_total_amount) }}</td>
+        <td class="text-end">{{ paiseFrom(item.billing_total_amount) }}</td>
+      </tr>
+      <tr *ngFor="let _ of emptyRows" class="empty-row">
+        <td>&nbsp;</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2" class="eoe">E.&amp;O.E.</td>
+        <td colspan="2" class="text-end total-label">Total</td>
+        <td class="text-end">{{ rupeesPart }}</td>
+        <td class="text-end">{{ paisePart }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="invoice-non-gst__words">
+    (Rupees <span class="words-line">{{ grandTotal | number : '1.2-2' }}</span> only)
+  </div>
+
+  <div class="invoice-non-gst__footer">
+    <p class="invoice-note">
+      Note: Goods once sold cannot be taken back or exchanged above goods are only in the form of
+      components / Sub assemblies / Unless it is specified as a PC Declaration we declare that this
+      invoice shows the actual price of the goods described and all particulars are true and correct,
+      Received all above goods in good condition &amp; correct quantities
+    </p>
+    <div class="sign-for">
+      <span>For : SOFTJOBS</span>
+    </div>
+  </div>
+</div>

@@ -1,146 +1,161 @@
-<nav class="navbar bg-light navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarTogglerDemo01"
-      aria-controls="navbarTogglerDemo01"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand text-capitalize">
-        <button
-          mat-raised-button
-          color="primary"
-          class="fw-lighter"
-          (click)="goToHomePage()"
-        >
-          <mat-icon>keyboard_backspace</mat-icon>
-        </button>
-      </a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
-        <li class="nav-item">
-          <a class="nav-link active fw-lighter" aria-current="page"
-            >Management Console</a
-          >
-        </li>
-      </ul>
+<app-nav active="billing">
+  <header class="sj-topbar">
+    <div>
+      <h1 class="sj-topbar__title">BILLING HISTORY</h1>
+      <p class="sj-topbar__subtitle">PAID · UNPAID · QUOTATIONS</p>
     </div>
-  </div>
-</nav>
+  </header>
 
-<div class="container">
-  <div class="row align-items-center">
-    <br />
-    <mat-tab-group>
-      <!-- invoice generated -->
-      <mat-tab label="Paid">
-        <table class="table text-capitalize fs-9 fw-lighter">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Date</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Billing amount</th>
-              <th scope="col">Delivery Type</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let invoice of invoiceArray">
-            <tr *ngIf="invoice[0].billing_status == 'paid'">
-              <td>
-                <mat-icon>file_copy</mat-icon
-                >{{ invoice[0].billing_uniqueNumber }}
-              </td>
-              <td>{{ invoice[0].billing_date }}</td>
-              <td>{{ invoice[0].customer_name }}</td>
-              <td>&#x20b9;{{ invoice[0].billing_netPay }}</td>
-              <td>{{ invoice[0].billing_delivery_type }}</td>
-              <td>{{ invoice[0].billing_status }}</td>
-              <td>
-                <a
-                  href="javascript:void(0);"
-                  [routerLink]="['/view', invoice[1]]"
-                  >view</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-tab>
+  <main class="sj-content">
+    <div class="sj-card">
+      <div class="sj-card__body">
+        <div class="sj-toolbar">
+          <div class="sj-toolbar__search">
+            <mat-icon>search</mat-icon>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="SEARCH INVOICE, CUSTOMER, PHONE"
+              list="billingSearchList"
+              autocomplete="off"
+              [(ngModel)]="searchText"
+            />
+            <datalist id="billingSearchList">
+              <option *ngFor="let item of searchSuggestions()" [value]="item"></option>
+            </datalist>
+          </div>
+          <select class="form-select sj-toolbar__select" [(ngModel)]="gstFilter">
+            <option value="all">ALL TYPES</option>
+            <option value="gst">GST ONLY</option>
+            <option value="non-gst">NON-GST ONLY</option>
+          </select>
+          <select class="form-select sj-toolbar__select" [(ngModel)]="deliveryFilter">
+            <option value="all">ALL DELIVERY</option>
+            <option value="direct">DIRECT</option>
+            <option value="courier">COURIER</option>
+            <option value="quotation">QUOTATION</option>
+            <option value="customer_point">CUSTOMER POINT</option>
+          </select>
+          <select class="form-select sj-toolbar__select" [(ngModel)]="sortBy">
+            <option value="date">SORT: DATE</option>
+            <option value="invoice">SORT: INVOICE #</option>
+            <option value="customer">SORT: CUSTOMER</option>
+            <option value="amount">SORT: AMOUNT</option>
+          </select>
+          <button type="button" class="sj-btn sj-btn--outline sj-toolbar__btn" (click)="sortDir = sortDir === 'asc' ? 'desc' : 'asc'">
+            <mat-icon>{{ sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+          </button>
+          <button type="button" class="sj-btn sj-btn--outline sj-toolbar__reset" (click)="clearFilters()">RESET</button>
+        </div>
 
-      <mat-tab label="Unpaid">
-        <table class="table text-capitalize fs-9 fw-lighter">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Date</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Billing amount</th>
-              <th scope="col">Delivery Type</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let invoice of invoiceArray">
-            <tr *ngIf="invoice[0].billing_status == 'unpaid'">
-              <td>
-                <mat-icon>file_copy</mat-icon
-                >{{ invoice[0].billing_uniqueNumber }}
-              </td>
-              <td>{{ invoice[0].billing_date }}</td>
-              <td>{{ invoice[0].customer_name }}</td>
-              <td>&#x20b9;{{ invoice[0].billing_netPay }}</td>
-              <td>{{ invoice[0].billing_delivery_type }}</td>
-              <td>{{ invoice[0].billing_status }}</td>
-              <td>
-                <a
-                  href="javascript:void(0);"
-                  [routerLink]="['/view', invoice[1]]"
-                  >view</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-tab>
-      <mat-tab label="Quotations">
-        <table class="table text-capitalize fs-9 fw-lighter">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">Date</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Billing amount</th>
-              <th scope="col">Delivery Type</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let invoice of invoiceArray">
-            <tr *ngIf="invoice[0].billing_status == 'quotation'">
-              <td>
-                <mat-icon>file_copy</mat-icon
-                >{{ invoice[0].billing_uniqueNumber }}
-              </td>
-              <td>{{ invoice[0].billing_date }}</td>
-              <td>{{ invoice[0].customer_name }}</td>
-              <td>&#x20b9;{{ invoice[0].billing_netPay }}</td>
-              <td>{{ invoice[0].billing_delivery_type }}</td>
-              <td>{{ invoice[0].billing_status }}</td>
-              <td>
-                <a
-                  href="javascript:void(0);"
-                  [routerLink]="['/view', invoice[1]]"
-                  >view</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </mat-tab>
-    </mat-tab-group>
+        <mat-tab-group animationDuration="200ms">
+          <mat-tab label="Paid">
+            <ng-container *ngTemplateOutlet="invoiceTab; context: { status: 'paid', badge: 'paid', label: 'Paid' }"></ng-container>
+          </mat-tab>
+          <mat-tab label="Unpaid">
+            <ng-container *ngTemplateOutlet="invoiceTab; context: { status: 'unpaid', badge: 'unpaid', label: 'Unpaid' }"></ng-container>
+          </mat-tab>
+          <mat-tab label="Quotations">
+            <ng-container *ngTemplateOutlet="invoiceTab; context: { status: 'quotation', badge: 'quotation', label: 'Quotation' }"></ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </main>
+</app-nav>
+
+<ng-template #invoiceTab let-status="status" let-badge="badge" let-label="label">
+  <p class="sj-result-count">{{ filterInvoices(status).length }} record(s)</p>
+
+  <div class="sj-mobile-cards mt-2">
+    <article class="sj-mobile-card" *ngFor="let invoice of filterInvoices(status)">
+      <div class="sj-mobile-card__top">
+        <span class="sj-mobile-card__title">#{{ invoice[0].billing_uniqueNumber }}</span>
+        <span class="sj-badge" [ngClass]="'sj-badge--' + badge">{{ label }}</span>
+      </div>
+      <div class="sj-mobile-card__meta">
+        {{ invoice[0].customer_name }} · {{ invoice[0].billing_date }}<br />
+        ₹ {{ invoice[0].billing_netPay }} · {{ invoice[0].billing_delivery_type }}
+      </div>
+      <div class="sj-mobile-card__footer">
+        <span
+          class="sj-badge"
+          [class.sj-badge--gst]="invoice[0].billing_is_gst === 'gst'"
+          [class.sj-badge--non-gst]="invoice[0].billing_is_gst !== 'gst'"
+        >
+          {{ invoice[0].billing_is_gst === 'gst' ? 'GST' : 'Non-GST' }}
+        </span>
+        <div class="sj-row-actions">
+          <button type="button" class="sj-btn sj-btn--outline sj-btn--sm" (click)="viewBill(invoice[1])">
+            <mat-icon>visibility</mat-icon>
+            VIEW
+          </button>
+          <button type="button" class="sj-btn sj-btn--primary sj-btn--sm" (click)="printBill(invoice[1])">
+            <mat-icon>print</mat-icon>
+            PRINT
+          </button>
+        </div>
+      </div>
+    </article>
+    <p class="sj-empty" *ngIf="filterInvoices(status).length === 0">No bills match your filters.</p>
   </div>
-</div>
+
+  <div class="sj-table-wrap sj-table--desktop mt-2">
+    <table class="sj-table">
+      <thead>
+        <tr>
+          <th class="sj-sortable" (click)="sortByColumn('invoice')">
+            Invoice # <mat-icon>{{ sortIcon('invoice') }}</mat-icon>
+          </th>
+          <th class="sj-sortable" (click)="sortByColumn('date')">
+            Date <mat-icon>{{ sortIcon('date') }}</mat-icon>
+          </th>
+          <th class="sj-sortable" (click)="sortByColumn('customer')">
+            Customer <mat-icon>{{ sortIcon('customer') }}</mat-icon>
+          </th>
+          <th>Type</th>
+          <th class="sj-sortable" (click)="sortByColumn('amount')">
+            Amount <mat-icon>{{ sortIcon('amount') }}</mat-icon>
+          </th>
+          <th>Delivery</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of filterInvoices(status)">
+          <td>#{{ invoice[0].billing_uniqueNumber }}</td>
+          <td>{{ invoice[0].billing_date }}</td>
+          <td>{{ invoice[0].customer_name }}</td>
+          <td>
+            <span
+              class="sj-badge"
+              [class.sj-badge--gst]="invoice[0].billing_is_gst === 'gst'"
+              [class.sj-badge--non-gst]="invoice[0].billing_is_gst !== 'gst'"
+            >
+              {{ invoice[0].billing_is_gst === 'gst' ? 'GST' : 'Non-GST' }}
+            </span>
+          </td>
+          <td>₹ {{ invoice[0].billing_netPay }}</td>
+          <td>{{ invoice[0].billing_delivery_type }}</td>
+          <td><span class="sj-badge" [ngClass]="'sj-badge--' + badge">{{ label }}</span></td>
+          <td>
+            <div class="sj-row-actions">
+              <button type="button" class="sj-btn sj-btn--outline sj-btn--sm" (click)="viewBill(invoice[1])">
+                <mat-icon>visibility</mat-icon>
+                VIEW
+              </button>
+              <button type="button" class="sj-btn sj-btn--primary sj-btn--sm" (click)="printBill(invoice[1])">
+                <mat-icon>print</mat-icon>
+                PRINT
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="filterInvoices(status).length === 0">
+          <td colspan="8" class="sj-empty">No bills match your filters.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
